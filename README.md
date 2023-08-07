@@ -11,7 +11,11 @@ Isomap is a non-linear dimensionality reduction method based on spectral theory 
 ## Stochastic Neighbor Embedding (SNE) 
 The high-dimensional Euclidean distances between datapoints are converted into conditional probabilities that express similarities in SNE. The conditional probability, p j|i, that xi would choose xj as its neighbour if neighbours were chosen in proportion to their probability density under a Gaussian centred at xi is the similarity of datapoint xj to datapoint xi. For close datapoints, p j|i is rather high, whereas for far apart datapoints, p j|i is nearly infinitesimal (for tolerable values of the Gaussian variance, I The conditional probability pj|i is calculated mathematically as follows: 
 
+![9](https://github.com/Sagarnandeshwar/Visualizing_High_Dimensional_Data/blob/main/images/9.png)
+
 Our 2D representation of X is matrix Y, which is a Nx2 matrix. We may construct distribution q based on Y in the same way that we constructed p. This is defined as: 
+
+![8](https://github.com/Sagarnandeshwar/Visualizing_High_Dimensional_Data/blob/main/images/8.png)
 
 Our ultimate goal is to select points in Y that produce a conditional probability distribution q that is comparable toThis is accomplished by lowering a cost: the difference in KL between the two distributions. We wish to keep this cost to a minimum. We’re just interested in the gradient with regard to our 2D representation Y because we’re going to apply gradient descent. Perplexity is a parameter that we set in SNE (and t-SNE) (usually between 5 and 50). The i’s are then set so that the perplexity of each row of P is equal to our desired perplexity – the parameter we selected. The greater the i the closer the probability distribution is to having all probabilities equal to 1/N. So, if we desire more perplexity, we’ll increase the size of our ’s, which will lead the conditional probability distributions to flatten. This effectively raises each point’s number of neighbours. To verify that the perplexity of each row of P, Perp(Pi) = target perplexity, we just execute a binary search over each i until Perp(Pi) = our target perplexity. Perplexity Perp(Pi) is a monotonically growing function of i hence this is possible. We use a matrix of negative euclidean distances and a target perplexity to find all i’s. We execute a binary search over all possible values of i’s for each row of the distances matrix until we locate the one that results in the target perplexity. We then return a numpy vector with the found optimal i’s. By reducing the gradient of the cost C with respect to Y until convergence, we might obtain a good 2D representation Y. However, because SNE’s gradient is more difficult to implement, we’ll instead employ Symmetric SNE. We minimise a KL divergence over the joint probability distributions with entries pij and qij, rather than conditional probabilities pi|j and qi|j, in Symmetric SNE. So now we have all of the information we need to calculate Symmetric SNE. 
 
@@ -20,6 +24,8 @@ Our ultimate goal is to select points in Y that produce a conditional probabilit
 SNE produces reasonably good visualizations, but it is plagued by a difficult-to-optimize cost function and an issue we call the "crowding problem." The t-SNE project tries to solve these issues. The cost function used by t-SNE differs from that used by SNE in two ways: it uses a symmetrized version of the SNE cost function with simpler gradients, and it computes the similarity between two points in the low-dimensional space using a Student-t distribution rather than a Gaussian distribution. To solve both the crowding and optimization concerns of SNE, t-SNE uses a heavy-tailed distribution in low-dimensional space.  
 
 It’s easy to transition from Symmetric SNE to t-SNE. Only the way we define the joint probability distribution matrix Q, which includes entries qij, differs, and gives us the following: 
+
+![7](https://github.com/Sagarnandeshwar/Visualizing_High_Dimensional_Data/blob/main/images/7.png)
 
 This is obtained by assuming that the qij follow a one-degree-of-freedom Student t-distribution. Essentially, this indicates that the technique is nearly invariant to the low-dimensional mapping’s general scale. As a result, the optimisation works the same for very far apart locations as it does for ones that are closer together. 
 
@@ -44,7 +50,15 @@ The Fashion MNIST Dataset is an MNIST-like dataset of 70,000 28x28 labeled fashi
 ### Olivetti Faces 
 There are ten different images of 40 distinct people in this dataset. There are 400 face images in total. Face images were taken at different times, varying lighting, facial expressions and facial details. All images have black backgrounds 
 
+![6](https://github.com/Sagarnandeshwar/Visualizing_High_Dimensional_Data/blob/main/images/6.png)
+
 ## Result 
+
+![1](https://github.com/Sagarnandeshwar/Visualizing_High_Dimensional_Data/blob/main/images/1.png)
+![2](https://github.com/Sagarnandeshwar/Visualizing_High_Dimensional_Data/blob/main/images/2.png)
+![3](https://github.com/Sagarnandeshwar/Visualizing_High_Dimensional_Data/blob/main/images/3.png)
+![4](https://github.com/Sagarnandeshwar/Visualizing_High_Dimensional_Data/blob/main/images/4.png)
+![5](https://github.com/Sagarnandeshwar/Visualizing_High_Dimensional_Data/blob/main/images/5.png)
 
 The comparison graphs are mentioned in the coding section in detail. We see that UMAP performed better cluster separation compared to other. Although this reduction technique wasn’t mentioned in the research paper, but we wanted to add this to show why UMAP is now widely used as a visualization technique. After UMAP, tSNE had a superior performance over other techniques like SNE, LLE and Isomap. Since tSNE is the primary focus of this report, we impelemented tSNE and SNE from scratch. We will be comparing the mathematical advantage of tSNE over SNE and why the former performed better than the latter. In addition, we’ll also discuss the supriority of the modern reduction technique i.e. UMAP over tSNE and why it was able to significantly separate the clusters. 
 
